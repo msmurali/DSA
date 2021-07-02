@@ -94,6 +94,8 @@ public class ArrayOperations {
 		reverse(arr, N); //calling reverse method
 			
 		remove(arr, N, 2); // calling remove method
+		
+		scan.close();
 				
 	}
 	
