@@ -1,14 +1,41 @@
 package com.ds;
 
-import java.util.*;
-import com.ds.LinkedList;
 
 public class LinkedListOperations {
 	
+	/* Recursive function for print list in reverse order */ 
+	static void printReverse(Node<Integer> head) {
+		
+		/* if head node is null return */
+		if(head == null) 	return;
+		
+		/* else move to next node */
+		printReverse(head.getNext());
+		
+		System.out.print(head.getData()+" ");
+		
+	}
 	
-	// get nth node from last
-	// print in reverse order
-	// reverse the list
+	static Node<Integer> reverse(Node<Integer> head) {
+		
+		Node<Integer> prev = null, curr = head, next;
+		
+		/* loop until last node */
+		while(curr != null) {
+			//backup next node of curr
+			next = curr.getNext();
+			
+			curr.setNext(prev);
+			
+			prev = curr;
+			
+			curr = next;
+		}
+		
+		return prev; //head node of reversed list
+		
+	}
+	
 	
 	/* Get middle node of linked list using loop */
 	static void getMiddleUsingLoop(LinkedList<Integer> list) {
@@ -60,7 +87,7 @@ public class LinkedListOperations {
 		
 		slow = fast = list.getHead();
 		
-		while(fast.getNext()!=null && fast.getNext().getNext() != null) {
+		while(fast.getNext() != null && fast.getNext().getNext() != null) {
 			
 			fast = fast.getNext().getNext();
 			slow = slow.getNext();
@@ -82,21 +109,38 @@ public class LinkedListOperations {
 		/* traverse the list until index greater than zero */
 		while(index-->0)
 			node = node.getNext();
+		
 			
 		System.out.println(node.getData());
 		
+	}
+	
+	static boolean hasLoop(Node<Integer> head) {
+		
+		Node<Integer> slow = head, fast = head;
+		
+		while(fast.getNext() != null && fast != null) {
+			fast = fast.getNext().getNext(); // moves two node at a time
+			slow = slow.getNext();           // moves one node at a time
+			
+			/* when there is a loop fast and slow points to same node */
+			if(fast == slow) 	return true;
+		}
+		
+		
+		return false;
 	}
 	
 	
 	public static void main(String[] args) {
 		
 		LinkedList<Integer> list = new LinkedList<Integer>();
-		
+				
 		for(int  num=1; num<24; num++)
 			list.insert(num);
 		
-		list.show();
-				
+		System.out.println(hasLoop(list.getHead()));
+		
 	}
 	
 	
