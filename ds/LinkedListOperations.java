@@ -1,6 +1,5 @@
 package com.ds;
 
-
 public class LinkedListOperations {
 	
 	/* Recursive function for print list in reverse order */ 
@@ -16,6 +15,7 @@ public class LinkedListOperations {
 		
 	}
 	
+	/* Reverse list */
 	static Node<Integer> reverse(Node<Integer> head) {
 		
 		Node<Integer> prev = null, curr = head, next;
@@ -35,7 +35,24 @@ public class LinkedListOperations {
 		return prev; //head node of reversed list
 		
 	}
+
+	/* Helper - Reverse list recursively */
+	static Node<Integer> reverseRecursive(Node<Integer> head){	
+		
+		return reverseRecursive(head, null);
+		
+	}
 	
+	/* Reverse list recursively */
+	static Node<Integer> reverseRecursive(Node<Integer> curr, Node<Integer> prev){
+		
+		if(curr == null)   return prev;
+		
+		Node<Integer> next = curr.getNext();
+		curr.setNext(prev);
+		return reverseRecursive(next, curr);
+		
+	}
 	
 	/* Get middle node of linked list using loop */
 	static void getMiddleUsingLoop(LinkedList<Integer> list) {
@@ -97,6 +114,7 @@ public class LinkedListOperations {
 		
 	}
 	
+	/* get a node at given index */
 	static void get(LinkedList<Integer> list, int index) {
 		
 		/* if head node is null return */
@@ -115,21 +133,45 @@ public class LinkedListOperations {
 		
 	}
 	
+	/* detect any loop in the list */
 	static boolean hasLoop(Node<Integer> head) {
 		
 		Node<Integer> slow = head, fast = head;
 		
-		while(fast.getNext() != null && fast != null) {
+		while(fast != null && fast.getNext() != null) {
 			fast = fast.getNext().getNext(); // moves two node at a time
 			slow = slow.getNext();           // moves one node at a time
 			
-			/* when there is a loop fast and slow points to same node */
+			/* when there is a loop, fast and slow points to same node */
 			if(fast == slow) 	return true;
 		}
 		
 		
 		return false;
 	}
+	
+	/* remove duplicates from sorted list */
+	static void rmDuplicates(Node<Integer> head) {
+		
+		Node<Integer> curr = head;
+		
+		while(curr != null && curr.getNext() != null) {
+			
+			/* if current node and next node are equal
+			 * change current next to current's next's next
+			 */
+			if(curr.getData() == curr.getNext().getData()) {
+				curr.setNext(curr.getNext().getNext());
+			}
+			/* if not equal move to next node */
+			else {
+				curr = curr.getNext();
+			}
+			
+		}
+		
+	}
+	
 	
 	
 	public static void main(String[] args) {
@@ -139,7 +181,11 @@ public class LinkedListOperations {
 		for(int  num=1; num<24; num++)
 			list.insert(num);
 		
-		System.out.println(hasLoop(list.getHead()));
+		list.show();
+		
+		list.setHead(reverseRecursive(list.getHead()));
+		
+		list.show();
 		
 	}
 	
