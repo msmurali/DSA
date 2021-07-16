@@ -2,6 +2,19 @@ package com.ds;
 
 public class LinkedListOperations {
 	
+	/* Recursive function for print list */
+	static void print(Node<Integer> head) {
+		
+		/* if head node is null return */
+		if(head == null) 	return;
+		
+		System.out.print(head.getData()+" ");
+		
+		/* call next node recursively */
+		print(head.getNext());
+		
+	}
+	
 	/* Recursive function for print list in reverse order */ 
 	static void printReverse(Node<Integer> head) {
 		
@@ -172,22 +185,69 @@ public class LinkedListOperations {
 		
 	}
 	
+	/* merge sorted lists */
+	static Node<Integer> mergeSorted(LinkedList<Integer> list1, LinkedList<Integer> list2){
+		
+		// result initialized with dummy node
+		Node<Integer> mergedList = new Node<Integer>(0); 
+		Node<Integer> tail = mergedList;
+		
+		Node<Integer> curr1 = list1.getHead();
+		Node<Integer> curr2 = list2.getHead();
+		
+		/* traverse node one by one until
+		 * one or both list gets empty
+		 */
+		while(curr1 != null && curr2 != null) {
+			
+			if(curr1.getData() <= curr2.getData()) {
+				tail.setNext(curr1);
+				curr1 = curr1.getNext();
+			}
+			else if(curr1.getData() > curr2.getData()) {
+				tail.setNext(curr2);
+				curr2 = curr2.getNext();
+			}
+			tail = tail.getNext();
+		}
+		
+		/* remaining nodes in list1 (if any) */
+		if(curr1 != null) {
+			tail.setNext(curr1);
+		}
+		
+		/* remaining nodes in list2 (if any) */
+		if(curr2 != null) {
+			tail.setNext(curr2);
+		}
+
+		return mergedList.getNext();
+		
+	}
+	
 	
 	
 	public static void main(String[] args) {
 		
-		LinkedList<Integer> list = new LinkedList<Integer>();
+		LinkedList<Integer> list1 = new LinkedList<Integer>();
 				
-		for(int  num=1; num<24; num++)
-			list.insert(num);
+		list1.insert(2);
+		list1.insert(5);
+		list1.insert(7);
+		list1.insert(8);
+		list1.insert(11);
 		
-		list.show();
+		list1.show();
 		
-		list.setHead(reverseRecursive(list.getHead()));
+		LinkedList<Integer> list2 = new LinkedList<Integer>();
 		
-		list.show();
+		list2.insert(1);
+		list2.insert(2);
+		list2.insert(5);
+		list2.insert(12);
 		
+		print(mergeSorted(list1, list2));
+			
 	}
-	
 	
 }
