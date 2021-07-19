@@ -1,4 +1,4 @@
-package dsa;
+package com.ds;
 
 public class DynamicArray<T> {
 	

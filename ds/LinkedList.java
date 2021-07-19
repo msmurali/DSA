@@ -1,4 +1,4 @@
-package dsa;
+package com.ds;
 
 class Node<T>{
 	
@@ -66,6 +66,11 @@ public class LinkedList<T> {
 		return this.getSize() + 1;
 	}
 	
+	//returns true if number of elements is zero
+	public boolean isEmpty() {
+		return (this.size() == 0);
+	}
+	
 	//insert element at last
 	public void insert(T data) {
 		
@@ -123,6 +128,18 @@ public class LinkedList<T> {
 		
 		this.setSize(this.getSize() + 1);
 		
+	}
+	
+	// get node by index
+	public T get(int index) {
+		
+		Node<T> node = this.getHead();
+		
+		while(index-->0) {
+			node = node.getNext();
+		}
+		
+		return node.getData();
 	}
 	
 	// getting head node
