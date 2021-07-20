@@ -1,18 +1,18 @@
 package com.ds;
 
-public class MinHeap<T> {
+public class MinHeap {
 	
-	private Object[] arr;
+	private Integer[] arr;
 	private int lastIndex = -1;
 	private int capacity;
 	
 	//getter for array
-	public Object[] getArr() {
+	public Integer[] getArr() {
 		return this.arr;
 	}
 	
 	//setter for array
-	public void setArr(Object[] arr) {
+	public void setArr(Integer[] arr) {
 		this.arr = arr;
 	}
 	
@@ -39,17 +39,17 @@ public class MinHeap<T> {
 	// Empty Constructor
 	public MinHeap() {
 		this.setCapacity(2);
-		this.setArr(new Object[this.getCapacity()]);
+		this.setArr(new Integer[this.getCapacity()]);
 	};
 	
 	// Constructor with initial capacity
 	public MinHeap(int capacity) {
 		this.setCapacity(capacity);
-		this.setArr(new Object[this.getCapacity()]);
+		this.setArr(new Integer[this.getCapacity()]);
 	}
 	
 	// Constructor with array
-	public MinHeap(T[] arr) {
+	public MinHeap(Integer[] arr) {
 		
 		if(arr.length <= 1) {
 			this.setCapacity(2);
@@ -59,10 +59,10 @@ public class MinHeap<T> {
 			this.setCapacity(cap);
 		}
 		
-		Object[] tempArr = new Object[this.getCapacity()];
+		Integer[] tempArr = new Integer[this.getCapacity()];
 		
 		for(int index=0; index<arr.length; index++) {
-			tempArr[index] = (Object)arr[index];
+			tempArr[index] = arr[index];
 		}
 		
 		this.setArr(tempArr);
@@ -101,25 +101,25 @@ public class MinHeap<T> {
 	}
 	
 	// get root of heap
-	public T top() {
-		return (T) this.getArr()[0];
+	public Integer top() {
+		return this.getArr()[0];
 	}
 	
 	// swap elements in array
 	public void swap(int i, int j) {
-		Object temp = this.arr[i];
+		Integer temp = this.arr[i];
 		this.arr[i] = this.arr[j];
 		this.arr[j] = temp;
 	}
 	
 	// insert new element in heap
-	public void insert(T element) {
+	public void insert(Integer element) {
 		if(this.getLastIndex()+1 >= this.getCapacity()) {
 			int newCapacity = this.getCapacity() * 2;
 			this.increaseCapacity(newCapacity);
 		}
 		
-		this.arr[this.getLastIndex()+1] = (Object)element;
+		this.arr[this.getLastIndex()+1] = element;
 		
 		int currIndex = this.getLastIndex()+1;
 		
@@ -136,8 +136,8 @@ public class MinHeap<T> {
 	// increase array capacity
 	private void increaseCapacity(int newCapacity) {
 		
-		Object[] arr = this.getArr();
-		Object[] newArr = new Object[newCapacity];
+		Integer[] arr = this.getArr();
+		Integer[] newArr = new Integer[newCapacity];
 		
 		for(int index=0; index<=this.getLastIndex(); index++) {			
 			newArr[index] = arr[index];			
@@ -145,6 +145,73 @@ public class MinHeap<T> {
 		
 		this.setArr(newArr);
 		this.setCapacity(newCapacity);
+	}
+	
+	private boolean isValidIndex(int index) {
+		
+		if(index < 0)	return false;
+		
+		return (index <= this.getLastIndex());
+		
+	}
+	
+	public void heapify() {
+		
+		int curr = 0;
+		int smallest = min(curr, this.parent(curr), this.left(curr));
+		
+		while(smallest != curr) {
+			
+			swap(curr, smallest);
+			curr = smallest;
+			smallest = min(curr, this.parent(curr), this.left(curr));
+			
+		}
+	
+	}
+	
+	public Integer extract() {
+		
+		if(this.getLastIndex() == -1) {
+			return null;
+		}
+		else {
+			Integer top = this.top();
+			this.arr[0] = this.getArr()[this.getLastIndex()];
+			heapify();
+			return top;
+		}
+		
+	}
+	
+	
+	private int min(int A, int B, int C) {
+		if(isValidIndex(B) && isValidIndex(C)) {
+			if(this.arr[A] <= this.arr[B] && this.arr[A] <= this.arr[C] )
+				return A;
+			else if( this.arr[B] <= this.arr[C] )
+				return B;
+			else 
+				return C;
+		}
+		else if(!isValidIndex(B) && isValidIndex(C)) {
+			if(this.arr[A] <= this.arr[C]) {
+				return A;
+			}else {
+				return C;
+			}
+		}
+		else if(isValidIndex(B) && !isValidIndex(C)) {
+			if(this.arr[A] <= this.arr[B]) {
+				return A;
+			}else {
+				return B;
+			}
+		}
+		else {
+			return A;
+		}
+		
 	}
 	
 	// print array
@@ -159,7 +226,7 @@ public class MinHeap<T> {
 	
 	public static void main(String[] args) {
 		
-		MinHeap<Integer> heap = new MinHeap<Integer>();
+		MinHeap heap = new MinHeap();
 		
 		heap.insert(2);
 		heap.insert(6);
@@ -179,6 +246,7 @@ public class MinHeap<T> {
 		 *      34  6 12 10    
 		 */
 		
+		System.out.println(heap.extract());
 		
 	}
 }
