@@ -147,72 +147,47 @@ public class MinHeap {
 		this.setCapacity(newCapacity);
 	}
 	
-	private boolean isValidIndex(int index) {
+	// Heapify 
+	public void heapify(int index) {
 		
-		if(index < 0)	return false;
+		int left = this.left(index);
+		int right = this.right(index);
+		int smallest = index;
 		
-		return (index <= this.getLastIndex());
-		
-	}
-	
-	public void heapify() {
-		
-		int curr = 0;
-		int smallest = min(curr, this.parent(curr), this.left(curr));
-		
-		while(smallest != curr) {
-			
-			swap(curr, smallest);
-			curr = smallest;
-			smallest = min(curr, this.parent(curr), this.left(curr));
-			
+		if(left <= this.getLastIndex() && this.arr[left] < this.arr[index]) {
+			smallest = left;
 		}
-	
+		if(right <= this.getLastIndex() && this.arr[right] < this.arr[smallest]) {
+			smallest = right;
+		}
+		
+		if(smallest != index) {
+			swap(index, smallest);
+			heapify(smallest);
+		}
 	}
 	
+	
+	// return and remove top/root of the heap
 	public Integer extract() {
 		
 		if(this.getLastIndex() == -1) {
 			return null;
 		}
+		
+		Integer top = this.top();
+		if(this.getLastIndex() == 0) {
+			this.setArr(new Integer[] {});
+		}
 		else {
-			Integer top = this.top();
 			this.arr[0] = this.getArr()[this.getLastIndex()];
-			heapify();
-			return top;
+			
 		}
-		
+		this.setLastIndex(this.getLastIndex()-1);
+		heapify(0);
+		return top;
 	}
 	
-	
-	private int min(int A, int B, int C) {
-		if(isValidIndex(B) && isValidIndex(C)) {
-			if(this.arr[A] <= this.arr[B] && this.arr[A] <= this.arr[C] )
-				return A;
-			else if( this.arr[B] <= this.arr[C] )
-				return B;
-			else 
-				return C;
-		}
-		else if(!isValidIndex(B) && isValidIndex(C)) {
-			if(this.arr[A] <= this.arr[C]) {
-				return A;
-			}else {
-				return C;
-			}
-		}
-		else if(isValidIndex(B) && !isValidIndex(C)) {
-			if(this.arr[A] <= this.arr[B]) {
-				return A;
-			}else {
-				return B;
-			}
-		}
-		else {
-			return A;
-		}
-		
-	}
 	
 	// print array
 	public void show() {	
@@ -245,8 +220,6 @@ public class MinHeap {
 		 *       / \   / \   
 		 *      34  6 12 10    
 		 */
-		
-		System.out.println(heap.extract());
-		
+
 	}
 }
