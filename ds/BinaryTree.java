@@ -299,6 +299,35 @@ public class BinaryTree{
 		
 	}
 	
+	public TreeNode delete(TreeNode root, TreeNode target) {
+		
+		if(root == null)	return root;
+		
+		TreeNode temp = root;
+		
+		while(root.key != target.key) {
+			if(target.key < root.key) {
+				root = root.left;
+			}
+			else if(target.key > root.key){
+				root = root.right;
+			}
+		}
+		
+		if(root.left == null && root.right == null) {
+			root = null;
+		}
+		else if(root.left != null && root.right == null) {
+			root = root.right;
+		}
+		else if(root.right != null && root.left == null) {
+			root = root.left;
+		}
+		
+		return root;
+		
+	}
+	
 	// driver
 	public static void main(String[] args) {
 		
@@ -308,12 +337,7 @@ public class BinaryTree{
 		tree.add(9);
 		tree.add(1);
 		tree.add(10);
-		tree.add(7);
-		tree.add(22);
-		tree.add(166);
-		tree.add(36);
 		
-		tree.verticalTraversal();
 	}
 	
 }
