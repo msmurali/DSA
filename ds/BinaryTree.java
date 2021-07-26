@@ -301,30 +301,36 @@ public class BinaryTree{
 	
 	public TreeNode delete(TreeNode root, TreeNode target) {
 		
-		if(root == null)	return root;
+		if(root == null) {
+			return null;
+		}
 		
-		TreeNode temp = root;
-		
-		while(root.key != target.key) {
-			if(target.key < root.key) {
-				root = root.left;
+		TreeNode curr = root;
+		while(curr.key != target.key) {
+			
+			if(target.key < curr.key) {
+				curr = curr.left;
 			}
-			else if(target.key > root.key){
-				root = root.right;
+			else if(target.key > curr.key) {
+				curr = curr.right;
 			}
 		}
 		
-		if(root.left == null && root.right == null) {
-			root = null;
+		if(curr.right == null && curr.left == null) {
+			curr = null;
 		}
-		else if(root.left != null && root.right == null) {
-			root = root.right;
+		else if(curr.left == null) {
+			curr = curr.right;
 		}
-		else if(root.right != null && root.left == null) {
-			root = root.left;
+		else if(curr.right == null) {
+			curr = curr.left;
 		}
+		else {
+			
+		}
+//		System.out.println(curr.key);
 		
-		return root;
+		return null;
 		
 	}
 	
@@ -337,7 +343,28 @@ public class BinaryTree{
 		tree.add(9);
 		tree.add(1);
 		tree.add(10);
+		tree.add(12);
+		tree.add(23);
+		tree.add(3);
+		tree.add(20);
 		
+		/*
+		 *      8
+		 *     / \
+		 *    2   9
+		 *   / \ / \
+		 *  1  3   10
+		 * / \     / \
+		 *           12
+		 *           / \
+		 *             23
+		 *             / \
+		 *            20
+		 *            
+ 		 */
+		
+		tree.delete(tree.root, new TreeNode(20));
+		tree.levelOrder();
 	}
 	
 }
