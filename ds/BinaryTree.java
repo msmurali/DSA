@@ -7,6 +7,8 @@ class TreeNode {
 	int key;
 	TreeNode left, right;
 	
+	public TreeNode() {}
+	
 	public TreeNode(int data) {
 		this.key = data;
 		this.left =null;
@@ -33,6 +35,7 @@ class Pair<S, T>{
 public class BinaryTree{
 	
 	TreeNode root;
+	
 	
 	private TreeNode insertRecursive(TreeNode current, int value) {
 		if (current == null) {
@@ -299,38 +302,97 @@ public class BinaryTree{
 		
 	}
 	
-	public TreeNode delete(TreeNode root, TreeNode target) {
+	public void delete(TreeNode root, TreeNode target) {
 		
 		if(root == null) {
-			return null;
+			return;
 		}
 		
 		TreeNode curr = root;
-		while(curr.key != target.key) {
-			
+		TreeNode parent = null;
+		boolean isLeftChild = false;
+		
+		while(curr != null && curr.key != target.key) {
+			parent = curr;
 			if(target.key < curr.key) {
 				curr = curr.left;
+				isLeftChild = true;
 			}
 			else if(target.key > curr.key) {
 				curr = curr.right;
+				isLeftChild = false;
 			}
 		}
 		
-		if(curr.right == null && curr.left == null) {
-			curr = null;
+		if(curr == null) {
+			return;
 		}
+		
+		if(curr.right == null && curr.left == null) {
+			if(parent == null) {
+				this.root = null;
+			}
+			else if(isLeftChild) {
+				parent.left = null;
+			}
+			else {
+				parent.right = null;
+			}
+		}
+	
 		else if(curr.left == null) {
-			curr = curr.right;
+			if(parent == null) {
+				this.root = curr.right;
+			}
+			else if(isLeftChild) {
+				parent.left = curr.right;
+			}
+			else {
+				parent.right = curr.right; 
+			}
 		}
 		else if(curr.right == null) {
-			curr = curr.left;
+			if(parent == null) {
+				this.root = curr.left; 
+			}
+			else if(isLeftChild) {
+				parent.left = curr.left;
+			}
+			else {
+				parent.right = curr.left;
+			}
 		}
 		else {
 			
+			TreeNode temp = curr.right;
+			TreeNode sucessorParent = null;
+			
+			while(temp.left != null) {
+				sucessorParent = temp;
+				temp = temp.left;
+			}
+			
+			if(sucessorParent != null) {
+				sucessorParent.left = temp.right;
+			}
+			else {
+				curr.right = temp.right;
+			}
+			
+			curr.key = temp.key;
 		}
-//		System.out.println(curr.key);
 		
-		return null;
+	}
+	
+	private TreeNode FindMin(TreeNode root) {
+		
+		if(root == null)	return root;
+		
+		TreeNode node = root;
+		while(node.left != null)
+			node = node.left;
+		
+		return node;
 		
 	}
 	
@@ -338,32 +400,27 @@ public class BinaryTree{
 	public static void main(String[] args) {
 		
 		BinaryTree tree = new BinaryTree();
-		tree.add(8);
-		tree.add(2);
-		tree.add(9);
-		tree.add(1);
-		tree.add(10);
-		tree.add(12);
-		tree.add(23);
+		tree.add(5);
 		tree.add(3);
-		tree.add(20);
+		tree.add(6);
+		tree.add(2);
+		tree.add(4);
+		tree.add(7);
+//		tree.add(18);
+//		tree.add(12);
 		
 		/*
-		 *      8
-		 *     / \
-		 *    2   9
-		 *   / \ / \
-		 *  1  3   10
-		 * / \     / \
-		 *           12
-		 *           / \
-		 *             23
-		 *             / \
-		 *            20
-		 *            
+		 *          10
+		 *        /    \
+		 *       7     15
+		 *      / \   /  \     --->    
+		 *     5   8 11  18
+		 *          /  \
+		 *             12
  		 */
 		
-		tree.delete(tree.root, new TreeNode(20));
+		
+		tree.delete(tree.root, new TreeNode(3));
 		tree.levelOrder();
 	}
 	
